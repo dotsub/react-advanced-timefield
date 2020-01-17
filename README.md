@@ -1,25 +1,23 @@
-# react-simple-timefield
+# react-advanced-timefield
 
-Simple React time input field, check out [demo](https://antonfisher.com/react-simple-timefield/).
+Advanced react time input field. Based out of the [Simple React time input field](https://github.com/antonfisher/react-simple-timefield).
 
-[![Build Status](https://travis-ci.org/antonfisher/react-simple-timefield.svg?branch=master)](https://travis-ci.org/antonfisher/react-simple-timefield)
-[![Coverage Status](https://coveralls.io/repos/github/antonfisher/react-simple-timefield/badge.svg?branch=master)](https://coveralls.io/github/antonfisher/react-simple-timefield?branch=master)
-[![npm](https://img.shields.io/npm/dt/react-simple-timefield.svg?colorB=brightgreen)](https://www.npmjs.com/package/react-simple-timefield)
-[![npm](https://img.shields.io/npm/v/react-simple-timefield.svg?colorB=brightgreen)](https://www.npmjs.com/package/react-simple-timefield)
-[![GitHub license](https://img.shields.io/github/license/antonfisher/react-simple-timefield.svg)](https://github.com/antonfisher/react-simple-timefield/blob/master/LICENSE)
-
-[![Demo](docs/demo.gif)](https://antonfisher.com/react-simple-timefield/)
+[![Build Status](https://travis-ci.org/dotsub/react-advanced-timefield.svg?branch=master)](https://travis-ci.org/dotsub/react-advanced-timefield)
+[![Coverage Status](https://coveralls.io/repos/github/dotsub/react-advanced-timefield/badge.svg?branch=master)](https://coveralls.io/github/dotsub/react-advanced-timefield?branch=master)
+[![npm](https://img.shields.io/npm/dt/react-advanced-timefield.svg?colorB=brightgreen)](https://www.npmjs.com/package/react-advanced-timefield)
+[![npm](https://img.shields.io/npm/v/react-advanced-timefield.svg?colorB=brightgreen)](https://www.npmjs.com/package/react-advanced-timefield)
+[![GitHub license](https://img.shields.io/github/license/dotsub/react-advanced-timefield.svg)](https://github.com/dotsub/react-advanced-timefield/blob/master/LICENSE)
 
 ## Installation
 ```bash
-npm install --save react-simple-timefield
+npm install --save react-advanced-timefield
 
-#for React <16 use: npm install --save react-simple-timefield@1
+#for React <16 use: npm install --save react-advanced-timefield@1
 ```
 
 ## Usage
 ```jsx
-import TimeField from 'react-simple-timefield';
+import TimeField from 'react-advanced-timefield';
 ...
 <TimeField
     value={time}                       // {String}   required, format '00:00' or '00:00:00'
@@ -27,12 +25,13 @@ import TimeField from 'react-simple-timefield';
     input={<MyCustomInputElement />}   // {Element}  default: <input type="text" />
     colon=":"                          // {String}   default: ":"
     showSeconds                        // {Boolean}  default: false
+    showMillis                         // {Boolean}  default: false
 />
 ```
 
 ## Real world example
 ```jsx
-import TimeField from 'react-simple-timefield';
+import TimeField from 'react-advanced-timefield';
 
 class App extends React.Component {
   constructor(...args) {
@@ -58,21 +57,6 @@ class App extends React.Component {
   }
 }
 ```
-
-## Migrate version 2.x to version 3.x
-
-There is a breaking change in version 3.
-The `onChange` callback property will be called with two arguments.
-
-```jsx
-// Before:
-<TimeField onChange={(value) => console.log(value)} />
-
-// After:
-<TimeField onChange={(event, value) => console.log(event, value)} />
-```
-
-## Contributing
 
 #### Run demo:
 For running demo locally, replace:

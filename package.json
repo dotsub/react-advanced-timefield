@@ -1,11 +1,10 @@
 {
-  "name": "react-simple-timefield",
+  "name": "react-advanced-timefield",
   "version": "3.0.0",
-  "description": "Simple React time input field",
+  "description": "Advanced react time input field",
   "author": {
-    "name": "Anton Fisher",
-    "email": "a.fschr@gmail.com",
-    "url": "http://antonfisher.com"
+    "name": "Adolfo Vazquez",
+    "email": "adolfo.software@gmail.com"
   },
   "license": "MIT",
   "main": "index.js",
@@ -25,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antonfisher/react-simple-timefield.git"
+    "url": "git+https://github.com/dotsub/react-advanced-timefield.git"
   },
   "keywords": [
     "react",
@@ -35,9 +34,9 @@
     "input"
   ],
   "bugs": {
-    "url": "https://github.com/antonfisher/react-simple-timefield/issues"
+    "url": "https://github.com/dotsub/react-advanced-timefield/issues"
   },
-  "homepage": "https://github.com/antonfisher/react-simple-timefield#readme",
+  "homepage": "https://github.com/dotsub/react-advanced-timefield#readme",
   "jest": {
     "setupTestFrameworkScriptFile": "./tests/setup.js"
   },
@@ -90,6 +89,10 @@
     {
       "name": "Nicholas Yang",
       "url": "https://github.com/NicholasLYang"
+    },
+    {
+      "name": "Adolfo Vazquez",
+      "url": "https://github.com/adolfov"
     }
   ]
 }
