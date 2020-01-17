@@ -1,31 +1,41 @@
 import React, {ChangeEvent, CSSProperties, ReactElement} from 'react';
 
 const DEFAULT_COLON = ':';
-const DEFAULT_VALUE_SHORT = `00${DEFAULT_COLON}00`;
-const DEFAULT_VALUE_FULL = `00${DEFAULT_COLON}00${DEFAULT_COLON}00`;
+const DEFAULT_DOT = '.';
+const DEFAULT_VALUE = `00${DEFAULT_COLON}00`;
+const DEFAULT_VALUE_SECONDS = `00${DEFAULT_COLON}00${DEFAULT_COLON}00`;
+const DEFAULT_VALUE_MILLIS = `00${DEFAULT_COLON}00${DEFAULT_COLON}00${DEFAULT_DOT}000`;
 
 export function isNumber<T>(value: T): boolean {
   const number = Number(value);
   return !isNaN(number) && String(value) === String(number);
 }
 
-export function formatTimeItem(value?: string | number): string {
-  return `${value || ''}00`.substr(0, 2);
+export function formatTimeItem(value?: string | number, length?: number): string {
+  return `${value || ''}${'0'.repeat(length || 2)}`.substr(0, length || 2);
 }
 
 export function validateTimeAndCursor(
   showSeconds = false,
+  showMillis = false,
   value = '',
   defaultValue = '',
   colon = DEFAULT_COLON,
   cursorPosition = 0
 ): [string, number] {
-  const [oldH, oldM, oldS] = defaultValue.split(colon);
+  // eslint-disable-next-line prefer-const
+  let [oldH, oldM, oldS] = defaultValue.split(colon);
+  if (oldS && (showMillis || (!showMillis && oldS.indexOf(DEFAULT_DOT) > -1))) {
+    oldS = oldS.split(DEFAULT_DOT)[0];
+  }
 
   let newCursorPosition = Number(cursorPosition);
-  let [newH, newM, newS] = String(value).split(colon);
+  let [newH, newM, newS, newSS] = [...String(value).split(colon), ''];
+  if (showMillis && newS) {
+    [newS, newSS] = newS.split(DEFAULT_DOT);
+  }
 
-  newH = formatTimeItem(newH);
+  newH = formatTimeItem(newH, 2);
   if (Number(newH[0]) > 2) {
     newH = oldH;
     newCursorPosition -= 1;
@@ -38,21 +48,29 @@ export function validateTimeAndCursor(
     }
   }
 
-  newM = formatTimeItem(newM);
+  newM = formatTimeItem(newM, 2);
   if (Number(newM[0]) > 5) {
     newM = oldM;
     newCursorPosition -= 1;
   }
 
   if (showSeconds) {
-    newS = formatTimeItem(newS);
+    newS = formatTimeItem(newS, 2);
     if (Number(newS[0]) > 5) {
       newS = oldS;
       newCursorPosition -= 1;
     }
   }
 
-  const validatedValue = showSeconds ? `${newH}${colon}${newM}${colon}${newS}` : `${newH}${colon}${newM}`;
+  if (showMillis) {
+    newSS = formatTimeItem(newSS, 3);
+  }
+
+  const validatedValue = showSeconds
+    ? showMillis
+      ? `${newH}${colon}${newM}${colon}${newS}.${newSS}`
+      : `${newH}${colon}${newM}${colon}${newS}`
+    : `${newH}${colon}${newM}`;
 
   return [validatedValue, newCursorPosition];
 }
@@ -63,6 +81,7 @@ interface Props {
   value?: string;
   onChange?: onChangeType;
   showSeconds?: boolean;
+  showMillis?: boolean;
   input: ReactElement | null;
   colon?: string;
   style?: CSSProperties | {};
@@ -73,12 +92,14 @@ interface State {
   _colon: string;
   _defaultValue: string;
   _showSeconds: boolean;
+  _showMillis: boolean;
   _maxLength: number;
 }
 
 export default class TimeField extends React.Component<Props, State> {
   static defaultProps: Props = {
     showSeconds: false,
+    showMillis: false,
     input: null,
     style: {},
     colon: DEFAULT_COLON
@@ -88,14 +109,16 @@ export default class TimeField extends React.Component<Props, State> {
     super(props);
 
     const _showSeconds = Boolean(props.showSeconds);
-    const _defaultValue = _showSeconds ? DEFAULT_VALUE_FULL : DEFAULT_VALUE_SHORT;
+    const _showMillis = Boolean(props.showMillis);
+    const _defaultValue = _showSeconds ? (_showMillis ? DEFAULT_VALUE_MILLIS : DEFAULT_VALUE_SECONDS) : DEFAULT_VALUE;
     const _colon = props.colon && props.colon.length === 1 ? props.colon : DEFAULT_COLON;
-    const [validatedTime] = validateTimeAndCursor(_showSeconds, this.props.value, _defaultValue, _colon);
+    const [validatedTime] = validateTimeAndCursor(_showSeconds, _showMillis, this.props.value, _defaultValue, _colon);
 
     this.state = {
       value: validatedTime,
       _colon,
       _showSeconds,
+      _showMillis,
       _defaultValue,
       _maxLength: _defaultValue.length
     };
@@ -107,6 +130,7 @@ export default class TimeField extends React.Component<Props, State> {
     if (this.props.value !== prevProps.value) {
       const [validatedTime] = validateTimeAndCursor(
         this.state._showSeconds,
+        this.state._showMillis,
         this.props.value,
         this.state._defaultValue,
         this.state._colon
@@ -128,6 +152,7 @@ export default class TimeField extends React.Component<Props, State> {
     const removedCharacter = isTyped ? null : oldValue[position];
     const replacedSingleCharacter = inputValue.length === oldValue.length ? oldValue[position - 1] : null;
     const colon = this.state._colon;
+    const dot = DEFAULT_DOT;
 
     let newValue = oldValue;
     let newPosition = position;
@@ -139,6 +164,11 @@ export default class TimeField extends React.Component<Props, State> {
         newValue = `${inputValue.substr(0, position - 1)}${colon}${inputValue.substr(position + 1)}`;
       } else if ((position === 3 || position === 6) && isNumber(addedCharacter)) {
         newValue = `${inputValue.substr(0, position - 1)}${colon}${addedCharacter}${inputValue.substr(position + 2)}`;
+        newPosition = position + 1;
+      } else if (position === 9 && addedCharacter === dot) {
+        newValue = `${inputValue.substr(0, position - 1)}${dot}${inputValue.substr(position + 1)}`;
+      } else if (position === 9 && isNumber(addedCharacter)) {
+        newValue = `${inputValue.substr(0, position - 1)}${dot}${addedCharacter}${inputValue.substr(position + 2)}`;
         newPosition = position + 1;
       } else if (isNumber(addedCharacter)) {
         // user typed a number
@@ -163,13 +193,16 @@ export default class TimeField extends React.Component<Props, State> {
         newValue = oldValue;
         newPosition = position - 1;
       }
-    } else if (typeof cursorCharacter !== 'undefined' && cursorCharacter !== colon && !isNumber(cursorCharacter)) {
+    } else if (typeof cursorCharacter !== 'undefined' && cursorCharacter !== colon && cursorCharacter !== dot && !isNumber(cursorCharacter)) {
       // set of characters replaced by non-number
       newValue = oldValue;
       newPosition = position - 1;
     } else if (removedCharacter !== null) {
       if ((position === 2 || position === 5) && removedCharacter === colon) {
         newValue = `${inputValue.substr(0, position - 1)}0${colon}${inputValue.substr(position)}`;
+        newPosition = position - 1;
+      } else if (position === 8 && removedCharacter === dot) {
+        newValue = `${inputValue.substr(0, position - 1)}0${dot}${inputValue.substr(position)}`;
         newPosition = position - 1;
       } else {
         // user removed a number
@@ -179,6 +212,7 @@ export default class TimeField extends React.Component<Props, State> {
 
     const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
       this.state._showSeconds,
+      this.state._showMillis,
       newValue,
       oldValue,
       colon,
@@ -196,7 +230,7 @@ export default class TimeField extends React.Component<Props, State> {
 
   render(): ReactElement {
     const {value} = this.state;
-    const {onChange, style, showSeconds, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
+    const {onChange, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
       this.onInputChange(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
 
