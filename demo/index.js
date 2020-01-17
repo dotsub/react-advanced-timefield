@@ -64,6 +64,23 @@ class App extends React.Component {
             }}
           />
         </section>
+        <h2>Show millis:</h2>
+        <section>
+          <TimeField
+            showSeconds
+            showMillis
+            value={timeSeconds}
+            onChange={this.onTimeChange}
+            style={{
+              border: '2px solid #666',
+              fontSize: 42,
+              width: 255,
+              padding: '5px 8px',
+              color: '#333',
+              borderRadius: 3
+            }}
+          />
+        </section>
         <h2>Custom colon:</h2>
         <section>
           <TimeField
@@ -74,7 +91,7 @@ class App extends React.Component {
             style={{
               border: '2px solid #666',
               fontSize: 42,
-              width: 170,
+              width: 180,
               padding: '5px 8px',
               color: '#333',
               borderRadius: 3

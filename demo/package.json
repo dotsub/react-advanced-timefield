@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-timefield-demo",
+  "name": "react-advanced-timefield-demo",
   "version": "1.3.2",
   "scripts": {
     "dev": "webpack-dev-server --open --progress --config=webpack.config.dev.js",
