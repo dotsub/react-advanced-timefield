@@ -61,24 +61,14 @@ describe('#validateTimeAndCursor()', () => {
     expect(validateTimeAndCursor(false, false, '12-34', DF, '-')[0]).toEqual('12-34');
   });
 
-  test('should return default value if bad format of hours', () => {
-    expect(validateTimeAndCursor(false, false, '30:00', DF)[0]).toEqual('00:00');
-    expect(validateTimeAndCursor(false, false, ':', DF)[0]).toEqual('00:00');
-
-    expect(validateTimeAndCursor(true, false, '30:00', DF)[0]).toEqual('00:00:00');
-    expect(validateTimeAndCursor(true, false, ':', DF)[0]).toEqual('00:00:00');
-
-    expect(validateTimeAndCursor(true, true, '30:00', DF)[0]).toEqual('00:00:00.000');
-    expect(validateTimeAndCursor(true, true, ':', DF)[0]).toEqual('00:00:00.000');
-  });
-
   test('should validate hours', () => {
     expect(validateTimeAndCursor(false, false, '00:00', DF)[0]).toEqual('00:00');
     expect(validateTimeAndCursor(false, false, '12:00', DF)[0]).toEqual('12:00');
     expect(validateTimeAndCursor(false, false, '23:00', DF)[0]).toEqual('23:00');
-    expect(validateTimeAndCursor(false, false, '24:00', DF)[0]).toEqual('23:00');
+    expect(validateTimeAndCursor(false, false, '24:00', DF)[0]).toEqual('24:00');
+    expect(validateTimeAndCursor(false, false, '99:00', DF)[0]).toEqual('99:00');
     expect(validateTimeAndCursor(false, false, '1:00', DF)[0]).toEqual('10:00');
-    expect(validateTimeAndCursor(false, false, '24:00', '21:00')[0]).toEqual('21:00');
+    expect(validateTimeAndCursor(false, false, '24:00', '21:00')[0]).toEqual('24:00');
   });
 
   test('should validate minutes', () => {

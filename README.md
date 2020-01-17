@@ -8,6 +8,11 @@ Advanced react time input field. Based out of the [Simple React time input field
 [![npm](https://img.shields.io/npm/v/react-advanced-timefield.svg?colorB=brightgreen)](https://www.npmjs.com/package/react-advanced-timefield)
 [![GitHub license](https://img.shields.io/github/license/dotsub/react-advanced-timefield.svg)](https://github.com/dotsub/react-advanced-timefield/blob/master/LICENSE)
 
+## Differences with react-simple-timefield
+
+- Added milliseconds support with `showMillis` property
+- Removed 24 hour limit
+
 ## Installation
 ```bash
 npm install --save react-advanced-timefield

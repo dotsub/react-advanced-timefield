@@ -69,9 +69,9 @@ describe('Component', () => {
   });
 
   test('should validate reserved props before render', () => {
-    expect(a.setProps({value: '30:60'}).state('value')).toEqual('00:00');
-    expect(b.setProps({value: '30:60:90'}).state('value')).toEqual('00:00:00');
-    expect(c.setProps({value: '30:60:90.999'}).state('value')).toEqual('00:00:00.999');
+    expect(a.setProps({value: '30:60'}).state('value')).toEqual('30:00');
+    expect(b.setProps({value: '30:60:90'}).state('value')).toEqual('30:00:00');
+    expect(c.setProps({value: '30:60:90.999'}).state('value')).toEqual('30:00:00.999');
   });
 
   test('should validate value after input change', () => {
