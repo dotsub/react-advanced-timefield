@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * Add milliseconds support ([PR5](https://github.com/dotsub/react-advanced-timefield/pull/5))
-* Remove 24 hour limit ([PR6](https://github.com/dotsub/react-advanced-timefield/pull/6))
+* Remove 24 hour limit (new limit is 99) ([PR6](https://github.com/dotsub/react-advanced-timefield/pull/6))
 * Add up/down arrow support ([PR7](https://github.com/dotsub/react-advanced-timefield/pull/7))
 
 

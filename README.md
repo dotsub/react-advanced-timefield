@@ -11,7 +11,7 @@ Advanced react time input field. Based out of the [Simple React time input field
 ## Differences with react-simple-timefield
 
 - Added milliseconds support with `showMillis` property
-- Removed 24 hour limit
+- Removed 24 hour limit (new limit is 99)
 
 ## Installation
 ```bash
