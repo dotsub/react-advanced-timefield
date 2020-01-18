@@ -38,6 +38,7 @@ class App extends React.Component {
           <TimeField
             value={time}
             onChange={this.onTimeChange}
+            onKeyDown={this.onTimeChange}
             style={{
               border: '2px solid #666',
               fontSize: 42,

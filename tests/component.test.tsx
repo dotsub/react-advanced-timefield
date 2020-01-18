@@ -10,11 +10,14 @@ describe('Component', () => {
   let onChangeA: jest.Mock;
   let onChangeB: jest.Mock;
   let onChangeC: jest.Mock;
+  const upArrowKeyCode = 38;
+  const downArrowKeyCode = 40;
 
   beforeEach(() => {
     persist = jest.fn();
     onChangeA = jest.fn();
     onChangeB = jest.fn();
+    onChangeC = jest.fn();
     a = mount(<TimeField value={'12:34'} onChange={onChangeA} />);
     b = mount(<TimeField value={'12:34:56'} onChange={onChangeB} showSeconds />);
     c = mount(<TimeField value={'12:34:56.789'} onChange={onChangeC} showSeconds showMillis />);
@@ -263,4 +266,75 @@ describe('Component', () => {
     const eventC = {target: {value: 'a', selectionEnd: 1}, persist};
     expect(c.simulate('change', eventC).state('value')).toEqual('12:34:56.789');
   });
+
+  test('should handle up arrow key in hours position', () => {
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(a.simulate('keyDown', eventA).state('value')).toEqual('13:34');
+
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('13:34:56');
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('13:34:56.789');
+  });
+
+  test('should handle up arrow key in minutes position', () => {
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(a.simulate('keyDown', eventA).state('value')).toEqual('12:35');
+
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:35:56');
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:35:56.789');
+  });
+
+  test('should handle up arrow key in seconds position', () => {
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:34:57');
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:57.789');
+  });
+
+  test('should handle up arrow key in millis position', () => {
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 9}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.889');
+  });
+
+  test('should handle down arrow key in hours position', () => {
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(a.simulate('keyDown', eventA).state('value')).toEqual('11:34');
+
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('11:34:56');
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('11:34:56.789');
+  });
+
+  test('should handle down arrow key in minutes position', () => {
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(a.simulate('keyDown', eventA).state('value')).toEqual('12:33');
+
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:33:56');
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:33:56.789');
+  });
+
+  test('should handle down arrow key in seconds position', () => {
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist};
+    expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:34:55');
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:55.789');
+  });
+
+  test('should handle down arrow key in millis position', () => {
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 9}, persist};
+    expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.689');
+  });
+
 });

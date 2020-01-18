@@ -1,10 +1,12 @@
-import React, {ChangeEvent, CSSProperties, ReactElement} from 'react';
+import React, {ChangeEvent, KeyboardEvent, CSSProperties, ReactElement} from 'react';
 
 const DEFAULT_COLON = ':';
 const DEFAULT_DOT = '.';
 const DEFAULT_VALUE = `00${DEFAULT_COLON}00`;
 const DEFAULT_VALUE_SECONDS = `00${DEFAULT_COLON}00${DEFAULT_COLON}00`;
 const DEFAULT_VALUE_MILLIS = `00${DEFAULT_COLON}00${DEFAULT_COLON}00${DEFAULT_DOT}000`;
+const UP_ARROW_KEY_CODE = 38;
+const DOWN_ARROW_KEY_CODE = 40;
 
 export function isNumber<T>(value: T): boolean {
   const number = Number(value);
@@ -64,6 +66,15 @@ export function validateTimeAndCursor(
   return [validatedValue, newCursorPosition];
 }
 
+export function increment(value: string, number: number): string {
+  const length = value.length;
+  let newValue = Number(value) + number;
+  if (newValue < 0) {
+    newValue = 0;
+  }
+  return newValue.toString().padStart(length, '0');
+}
+
 type onChangeType = (event: ChangeEvent<HTMLInputElement>, value: string) => void;
 
 interface Props {
@@ -113,6 +124,7 @@ export default class TimeField extends React.Component<Props, State> {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
+    this.onKeyDowned = this.onKeyDowned.bind(this);
   }
 
   componentDidUpdate(prevProps: Props): void {
@@ -217,18 +229,77 @@ export default class TimeField extends React.Component<Props, State> {
     event.persist();
   }
 
+  onKeyDowned(event: KeyboardEvent<HTMLInputElement>, callback: onChangeType): void {
+    const oldValue = this.state.value;
+    const inputEl = event.target as HTMLInputElement;
+    const keyCode = event.keyCode;
+    const position = inputEl.selectionEnd || 0;
+    const colon = this.state._colon;
+    const showMillis = this.state._showMillis;
+    let [hours, minutes, seconds, millis] = oldValue.split(colon);
+    if (showMillis && seconds) {
+      [seconds, millis] = seconds.split(DEFAULT_DOT);
+    }
+
+    let newValue = oldValue;
+    let newPosition = position;
+
+    const isUpArrow = keyCode === UP_ARROW_KEY_CODE;
+    const isDownArrow = keyCode === DOWN_ARROW_KEY_CODE;
+    if (isUpArrow || isDownArrow) {
+      if (position > this.state._maxLength) {
+        newPosition = this.state._maxLength;
+      } else if (position < 3) {
+        // hours
+        newValue = `${increment(hours, isUpArrow ? 1 : -1)}${oldValue.substr(2)}`;
+      } else if (position >= 3 && position < 6) {
+        // minutes
+        newValue = `${oldValue.substr(0, 3)}${increment(minutes, isUpArrow ? 1 : -1)}${oldValue.substr(5)}`;
+      } else if (position >= 6 && position < 9) {
+        // seconds
+        newValue = `${oldValue.substr(0, 6)}${increment(seconds, isUpArrow ? 1 : -1)}${oldValue.substr(8)}`;
+      } else {
+        // millis
+        newValue = `${oldValue.substr(0, 9)}${increment(millis, isUpArrow ? 100 : -100)}`;
+      }
+    }
+
+    const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
+      this.state._showSeconds,
+      this.state._showMillis,
+      newValue,
+      oldValue,
+      colon,
+      newPosition
+    );
+
+    this.setState({value: validatedTime}, () => {
+      inputEl.selectionStart = validatedCursorPosition;
+      inputEl.selectionEnd = validatedCursorPosition;
+      const changeEvent = ({
+        target: {value: validatedTime}
+      } as unknown) as ChangeEvent<HTMLInputElement>;
+      callback(changeEvent, validatedTime);
+    });
+
+    event.persist();
+  }
+
   render(): ReactElement {
     const {value} = this.state;
     const {onChange, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
       this.onInputChange(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>
+      this.onKeyDowned(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
 
     if (input) {
       return React.cloneElement(input, {
         ...props,
         value,
         style,
-        onChange: onChangeHandler
+        onChange: onChangeHandler,
+        onKeyDown: onKeyDownHandler
       });
     }
 
@@ -238,6 +309,7 @@ export default class TimeField extends React.Component<Props, State> {
         {...props}
         value={value}
         onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
         style={{width: showSeconds ? 54 : 35, ...style}}
       />
     );
