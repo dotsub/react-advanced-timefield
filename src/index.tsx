@@ -26,9 +26,9 @@ export function validateTimeAndCursor(
   cursorPosition = 0
 ): [string, number] {
   // eslint-disable-next-line prefer-const
-  let [oldH, oldM, oldS] = defaultValue.split(colon);
+  let [oldH, oldM, oldS, oldSS] = [...String(defaultValue).split(colon), ''];
   if (oldS && (showMillis || (!showMillis && oldS.indexOf(DEFAULT_DOT) > -1))) {
-    oldS = oldS.split(DEFAULT_DOT)[0];
+    [oldS, oldSS] = oldS.split(DEFAULT_DOT);
   }
 
   let newCursorPosition = Number(cursorPosition);
@@ -58,6 +58,10 @@ export function validateTimeAndCursor(
   }
 
   if (showMillis) {
+    if (newSS && newSS.length > 3) {
+      newSS = oldSS;
+      newCursorPosition -= 1;
+    }
     newSS = formatTimeItem(newSS, 3);
   }
 
