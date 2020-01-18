@@ -13,6 +13,7 @@ class App extends React.Component {
     this.state = {
       time: '12:34',
       timeSeconds: '12:34:56',
+      timeMillis: '12:34:56.789',
       timeSecondsCustomColon: '12-34-56'
     };
 
@@ -23,13 +24,14 @@ class App extends React.Component {
     const newTime = value.replace(/-/g, ':');
     const time = newTime.substr(0, 5);
     const timeSeconds = newTime.padEnd(8, this.state.timeSeconds.substr(5, 3));
+    const timeMillis = newTime.padEnd(12, this.state.timeMillis.substr(8, 4));
     const timeSecondsCustomColon = timeSeconds.replace(/:/g, '-');
 
-    this.setState({time, timeSeconds, timeSecondsCustomColon});
+    this.setState({time, timeSeconds, timeMillis, timeSecondsCustomColon});
   }
 
   render() {
-    const {time, timeSeconds, timeSecondsCustomColon} = this.state;
+    const {time, timeSeconds, timeMillis, timeSecondsCustomColon} = this.state;
 
     return (
       <section className="container">
@@ -70,7 +72,7 @@ class App extends React.Component {
           <TimeField
             showSeconds
             showMillis
-            value={timeSeconds}
+            value={timeMillis}
             onChange={this.onTimeChange}
             style={{
               border: '2px solid #666',

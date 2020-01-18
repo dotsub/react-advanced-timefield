@@ -7,6 +7,7 @@ describe('Component', () => {
   let b: ReactWrapper | null;
   let c: ReactWrapper | null;
   let persist: jest.Mock;
+  let preventDefault: jest.Mock;
   let onChangeA: jest.Mock;
   let onChangeB: jest.Mock;
   let onChangeC: jest.Mock;
@@ -15,6 +16,7 @@ describe('Component', () => {
 
   beforeEach(() => {
     persist = jest.fn();
+    preventDefault = jest.fn();
     onChangeA = jest.fn();
     onChangeB = jest.fn();
     onChangeC = jest.fn();
@@ -268,73 +270,129 @@ describe('Component', () => {
   });
 
   test('should handle up arrow key in hours position', () => {
-    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(a.simulate('keyDown', eventA).state('value')).toEqual('13:34');
 
-    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('13:34:56');
 
-    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('13:34:56.789');
   });
 
+  test('should handle up arrow key in hours position on max limit', () => {
+    const input = shallow(<TimeField value={'99:34:56.789'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 0}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('99:34:56.789');
+  });
+
   test('should handle up arrow key in minutes position', () => {
-    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(a.simulate('keyDown', eventA).state('value')).toEqual('12:35');
 
-    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:35:56');
 
-    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:35:56.789');
   });
 
+  test('should handle up arrow key in minutes position on max limit', () => {
+    const input = shallow(<TimeField value={'12:59:56.789'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 5}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:59:56.789');
+  });
+
   test('should handle up arrow key in seconds position', () => {
-    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist};
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:34:57');
 
-    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist};
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 7}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:57.789');
   });
 
+  test('should handle up arrow key in minutes position on max limit', () => {
+    const input = shallow(<TimeField value={'12:34:59.789'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 8}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:59.789');
+  });
+
   test('should handle up arrow key in millis position', () => {
-    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 9}, persist};
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 9}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.889');
   });
 
+  test('should handle up arrow key in millis position on max limit', () => {
+    const input = shallow(<TimeField value={'12:34:56.999'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 10}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.999');
+  });
+
   test('should handle down arrow key in hours position', () => {
-    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(a.simulate('keyDown', eventA).state('value')).toEqual('11:34');
 
-    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('11:34:56');
 
-    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist};
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 1}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('11:34:56.789');
   });
 
+  test('should handle down arrow key in hours position on min limit', () => {
+    const input = shallow(<TimeField value={'00:34:56.999'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('00:34:56.999');
+  });
+
   test('should handle down arrow key in minutes position', () => {
-    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(a.simulate('keyDown', eventA).state('value')).toEqual('12:33');
 
-    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:33:56');
 
-    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist};
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 4}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:33:56.789');
   });
 
+  test('should handle down arrow key in minutes position on min limit', () => {
+    const input = shallow(<TimeField value={'12:00:56.999'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 5}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:00:56.999');
+  });
+
   test('should handle down arrow key in seconds position', () => {
-    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist};
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist, preventDefault};
     expect(b.simulate('keyDown', eventB).state('value')).toEqual('12:34:55');
 
-    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist};
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 7}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:55.789');
   });
 
+  test('should handle down arrow key in seconds position on min limit', () => {
+    const input = shallow(<TimeField value={'12:34:00.999'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 8}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:00.999');
+  });
+
   test('should handle down arrow key in millis position', () => {
-    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 9}, persist};
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 9}, persist, preventDefault};
     expect(c.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.689');
+  });
+
+  test('should handle down arrow key in millis position on min limit', () => {
+    const input = shallow(<TimeField value={'12:34:56.000'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 10}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.000');
   });
 
 });
