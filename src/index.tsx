@@ -251,6 +251,7 @@ export default class TimeField extends React.Component<Props, State> {
     const isUpArrow = keyCode === UP_ARROW_KEY_CODE;
     const isDownArrow = keyCode === DOWN_ARROW_KEY_CODE;
     if (isUpArrow || isDownArrow) {
+      event.preventDefault(); // prevents cursor moving to beginning or end of input
       if (position > this.state._maxLength) {
         newPosition = this.state._maxLength;
       } else if (position < 3) {
