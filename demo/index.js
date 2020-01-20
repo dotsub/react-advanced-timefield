@@ -113,6 +113,18 @@ class App extends React.Component {
             />
           </div>
         </section>
+        <h2>With CSS class:</h2>
+        <section>
+          <div style={{marginRight: 20}}>
+            <TimeField
+              showSeconds
+              value={time}
+              onChange={this.onTimeChange}
+              className="custom-class"
+              style={{textAlign: 'right'}}
+            />
+          </div>
+        </section>
       </section>
     );
   }

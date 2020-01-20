@@ -92,6 +92,7 @@ interface Props {
   showMillis?: boolean;
   input: ReactElement | null;
   colon?: string;
+  className?: string;
   style?: CSSProperties | {};
 }
 
@@ -296,7 +297,7 @@ export default class TimeField extends React.Component<Props, State> {
 
   render(): ReactElement {
     const {value} = this.state;
-    const {onChange, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
+    const {onChange, className, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
       this.onInputChange(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>
@@ -306,6 +307,7 @@ export default class TimeField extends React.Component<Props, State> {
       return React.cloneElement(input, {
         ...props,
         value,
+        className,
         style,
         onChange: onChangeHandler,
         onKeyDown: onKeyDownHandler
@@ -319,7 +321,8 @@ export default class TimeField extends React.Component<Props, State> {
         value={value}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
-        style={{width: showSeconds ? 54 : 35, ...style}}
+        className={className}
+        style={style}
       />
     );
   }
