@@ -117,7 +117,6 @@ class App extends React.Component {
         <section>
           <div style={{marginRight: 20}}>
             <TimeField
-              showSeconds
               value={time}
               onChange={this.onTimeChange}
               className="custom-class"
