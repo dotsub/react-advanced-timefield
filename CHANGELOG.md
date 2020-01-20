@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.2.0](https://github.com/dotsub/react-advanced-timefield/compare/v3.0.0...v3.2.0) (2020-01-17)
+
+
+### Features
+
+* Add milliseconds support ([PR5](https://github.com/dotsub/react-advanced-timefield/pull/5))
+* Remove 24 hour limit (new limit is 99) ([PR6](https://github.com/dotsub/react-advanced-timefield/pull/6))
+* Add up/down arrow support ([PR7](https://github.com/dotsub/react-advanced-timefield/pull/7))
+
+
 ## [3.0.0](https://github.com/antonfisher/react-simple-timefield/compare/v2.0.3...v3.0.0) (2019-09-29)
 
 

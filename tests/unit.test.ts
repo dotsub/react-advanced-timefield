@@ -1,4 +1,4 @@
-import {isNumber, formatTimeItem, validateTimeAndCursor} from '../src/index';
+import {isNumber, formatTimeItem, validateTimeAndCursor, increment} from '../src/index';
 
 describe('#isNumber()', () => {
   test('should return true for numbers', () => {
@@ -93,5 +93,24 @@ describe('#validateTimeAndCursor()', () => {
     expect(validateTimeAndCursor(true, true, '12:00:00.09', DF)[0]).toEqual('12:00:00.090');
     expect(validateTimeAndCursor(true, true, '12:00:00.9', DF)[0]).toEqual('12:00:00.900');
     expect(validateTimeAndCursor(true, true, '12:00:00.', DF)[0]).toEqual('12:00:00.000');
+  });
+});
+
+describe('#increment()', () => {
+  test('should return original value incremented by 1', () => {
+    expect(increment('00', 1)).toBe('01');
+    expect(increment('000', 1)).toBe('001');
+  });
+
+  test('should return minimum value of 0', () => {
+    expect(increment('00', -1)).toBe('00');
+    expect(increment('23', -34)).toBe('00');
+    expect(increment('000', -1)).toBe('000');
+    expect(increment('023', -34)).toBe('000');
+  });
+
+  test('should return original value incremented by 15', () => {
+    expect(increment('06', 15)).toBe('21');
+    expect(increment('006', 15)).toBe('021');
   });
 });
