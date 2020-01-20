@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import {shallow, mount, ReactWrapper} from 'enzyme';
 import TimeField from '../src/index';
 
@@ -53,6 +53,25 @@ describe('Component', () => {
 
     expect(customInput.find('input')).toHaveLength(1);
     expect(customInput.find('input').getElement().props.id).toEqual('lol');
+  });
+
+  test('should render custom styles', () => {
+    const customStyle = shallow(<TimeField value={'12:34'} onChange={onChangeA} style={{width: '150px'}} />);
+
+    expect(customStyle.find('input').getElement().props.style).toEqual({width: '150px'});
+  });
+
+  test('should render custom class names', () => {
+    const customClassName = shallow(<TimeField value={'12:34'} onChange={onChangeA} className="class-1 class-2" />);
+
+    expect(customClassName.find('input').getElement().props.className).toEqual("class-1 class-2");
+  });
+
+  test('should render custom class names and styles', () => {
+    const customClassNameStlye = shallow(<TimeField value={'12:34'} onChange={onChangeA} className="class-1 class-2" style={{width: '150px'}} />);
+
+    expect(customClassNameStlye.find('input').getElement().props.style).toEqual({width: '150px'});
+    expect(customClassNameStlye.find('input').getElement().props.className).toEqual("class-1 class-2");
   });
 
   test('should render time value from props', () => {
