@@ -24,7 +24,7 @@ class App extends React.Component {
     const newTime = value.replace(/-/g, ':');
     const time = newTime.substr(0, 5);
     const timeSeconds = newTime.padEnd(8, this.state.timeSeconds.substr(5, 3));
-    const timeMillis = newTime.padEnd(12, this.state.timeMillis.substr(8, 4));
+    const timeMillis = timeSeconds.padEnd(12, this.state.timeMillis.substr(8, 4));
     const timeSecondsCustomColon = timeSeconds.replace(/:/g, '-');
 
     this.setState({time, timeSeconds, timeMillis, timeSecondsCustomColon});
@@ -110,6 +110,17 @@ class App extends React.Component {
               onChange={this.onTimeChange}
               style={{width: 88}}
               input={<TextField label="Name" value={timeSeconds} variant="outlined" />}
+            />
+          </div>
+        </section>
+        <h2>With CSS class:</h2>
+        <section>
+          <div style={{marginRight: 20}}>
+            <TimeField
+              value={time}
+              onChange={this.onTimeChange}
+              className="custom-class"
+              style={{textAlign: 'right'}}
             />
           </div>
         </section>
