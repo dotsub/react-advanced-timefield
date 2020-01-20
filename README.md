@@ -14,6 +14,7 @@ Advanced react time input field. Based out of the [Simple React time input field
 - Removed 24 hour limit (new limit is 99)
 - Added up/down arrow support to increase or decrease based on cursor position
 - Added className property to receive css classes
+- Added TypeScript compatibility
 
 ## Installation
 ```bash

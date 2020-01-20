@@ -1,13 +1,14 @@
 {
   "name": "react-advanced-timefield",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Advanced react time input field",
   "author": {
     "name": "Adolfo Vazquez",
     "email": "adolfo.software@gmail.com"
   },
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
   "scripts": {
     "build": "tsc && cd ./demo && npm run build && cd -",
     "test": "jest",
