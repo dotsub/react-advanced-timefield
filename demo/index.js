@@ -24,7 +24,7 @@ class App extends React.Component {
     const newTime = value.replace(/-/g, ':');
     const time = newTime.substr(0, 5);
     const timeSeconds = newTime.padEnd(8, this.state.timeSeconds.substr(5, 3));
-    const timeMillis = newTime.padEnd(12, this.state.timeMillis.substr(8, 4));
+    const timeMillis = timeSeconds.padEnd(12, this.state.timeMillis.substr(8, 4));
     const timeSecondsCustomColon = timeSeconds.replace(/:/g, '-');
 
     this.setState({time, timeSeconds, timeMillis, timeSecondsCustomColon});
