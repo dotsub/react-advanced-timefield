@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# [3.5.0](https://github.com/dotsub/react-advanced-timefield/compare/v3.0.0...v3.2.0) (2020-01-20)
+# [3.5.4](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.0...v3.5.4) (2020-01-20)
+
+
+### Bug Fixes
+
+* Typescript compatibility fix ([PR10](https://github.com/dotsub/react-advanced-timefield/pull/10))
+* Change TS module from ESNext to CommonJs ([PR11](https://github.com/dotsub/react-advanced-timefield/pull/11))
+
+# [3.5.0](https://github.com/dotsub/react-advanced-timefield/compare/v3.0.0...v3.5.0) (2020-01-20)
 
 
 ### Features
