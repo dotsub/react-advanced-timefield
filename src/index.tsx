@@ -203,7 +203,12 @@ export default class TimeField extends React.Component<Props, State> {
         newValue = oldValue;
         newPosition = position - 1;
       }
-    } else if (typeof cursorCharacter !== 'undefined' && cursorCharacter !== colon && cursorCharacter !== dot && !isNumber(cursorCharacter)) {
+    } else if (
+      typeof cursorCharacter !== 'undefined' &&
+      cursorCharacter !== colon &&
+      cursorCharacter !== dot &&
+      !isNumber(cursorCharacter)
+    ) {
       // set of characters replaced by non-number
       newValue = oldValue;
       newPosition = position - 1;
