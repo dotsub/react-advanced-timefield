@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, CSSProperties, ReactElement} from 'react';
+import React, {ChangeEvent, KeyboardEvent, CSSProperties, ReactElement, SyntheticEvent} from 'react';
 
 const DEFAULT_COLON = ':';
 const DEFAULT_DOT = '.';
@@ -83,7 +83,7 @@ export function increment(value: string, number: number): string {
   return newValue.toString().padStart(length, '0');
 }
 
-type onChangeType = (event: ChangeEvent<HTMLInputElement>, value: string) => void;
+type onChangeType = (event: SyntheticEvent<HTMLInputElement>, value: string) => void;
 
 interface Props {
   value?: string;
@@ -286,9 +286,7 @@ export default class TimeField extends React.Component<Props, State> {
     this.setState({value: validatedTime}, () => {
       inputEl.selectionStart = validatedCursorPosition;
       inputEl.selectionEnd = validatedCursorPosition;
-      const changeEvent = ({
-        target: {value: validatedTime}
-      } as unknown) as ChangeEvent<HTMLInputElement>;
+      const changeEvent = event as SyntheticEvent<HTMLInputElement>;
       callback(changeEvent, validatedTime);
     });
 
@@ -299,9 +297,9 @@ export default class TimeField extends React.Component<Props, State> {
     const {value} = this.state;
     const {onChange, className, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
-      this.onInputChange(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
+      this.onInputChange(event, (e: SyntheticEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>
-      this.onKeyDowned(event, (e: ChangeEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
+      this.onKeyDowned(event, (e: SyntheticEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
 
     if (input) {
       return React.cloneElement(input, {
