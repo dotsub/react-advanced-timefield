@@ -318,7 +318,18 @@ export default class TimeField extends React.Component<Props, State> {
 
   render(): ReactElement {
     const {value} = this.state;
-    const {onChange, className, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
+    const {
+      onChange,
+      className,
+      style,
+      showSeconds,
+      showMillis,
+      input,
+      colon,
+      minValue,
+      maxValue,
+      ...props
+    } = this.props; //eslint-disable-line no-unused-vars
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
       this.onInputChange(event, (e: SyntheticEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>
