@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.5.5](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.4...v3.5.5) (2020-03-05)
+
+
+### Bug Fixes
+
+* Event object getting lost on keyDown ([PR12](https://github.com/dotsub/react-advanced-timefield/pull/12))
+
+
 # [3.5.4](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.0...v3.5.4) (2020-01-20)
 
 
