@@ -15,6 +15,7 @@ Advanced react time input field. Based out of the [Simple React time input field
 - Added up/down arrow support to increase or decrease based on cursor position
 - Added className property to receive css classes
 - Added TypeScript compatibility
+- Added `minValue` and `maxValue` properties
 
 ## Installation
 ```bash
@@ -29,6 +30,8 @@ import TimeField from 'react-advanced-timefield';
 ...
 <TimeField
     value={time}                       // {String}   required, format '00:00' or '00:00:00'
+    minValue={time}                    // {String}   optional, format '00:00' or '00:00:00'
+    maxValue={time}                    // {String}   optional, format '00:00' or '00:00:00'
     onChange={(event, value) => {...}} // {Function} required
     input={<MyCustomInputElement />}   // {Element}  default: <input type="text" />
     colon=":"                          // {String}   default: ":"

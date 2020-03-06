@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.6.0](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.5...v3.6.0) (2020-03-06)
+
+### Features
+
+* Add minValue and maxValue properties ([PR13](https://github.com/dotsub/react-advanced-timefield/pull/13))
+
+
 # [3.5.5](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.4...v3.5.5) (2020-03-05)
 
 
