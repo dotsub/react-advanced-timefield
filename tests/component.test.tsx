@@ -414,4 +414,130 @@ describe('Component', () => {
     expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.000');
   });
 
+  test('should keep old value if new value is greater than max value on default value change', () => {
+    const input = shallow(<TimeField maxValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {target: {value: '00:26', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventA).state('value')).toEqual('00:00');
+  });
+
+  test('should keep old value if new value is greater than max value on default value change with seconds', () => {
+    const input = shallow(<TimeField maxValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {target: {value: '00:00:26', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00');
+  });
+
+  test('should keep old value if new value is greater than max value on default value change with millis', () => {
+    const input = shallow(<TimeField maxValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventB = {target: {value: '00:00:00.260', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00.000');
+  });
+
+  test('should keep old value if new value is greater than max value on value change', () => {
+    const input = shallow(<TimeField value={'00:24'} maxValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {target: {value: '00:26', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventA).state('value')).toEqual('00:24');
+  });
+
+  test('should keep old value if new value is greater than max value on value change with seconds', () => {
+    const input = shallow(<TimeField value={'00:00:24'} maxValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {target: {value: '00:00:26', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:24');
+  });
+
+  test('should keep old value if new value is greater than max value on value change with millis', () => {
+    const input = shallow(<TimeField value={'00:00:00.240'} maxValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventB = {target: {value: '00:00:00.260', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00.240');
+  });
+
+  test('should keep old value if new value is greater than max value on up arrow key', () => {
+    const input = shallow(<TimeField value={'00:25'} maxValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 3}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventA).state('value')).toEqual('00:25');
+  });
+
+  test('should keep old value if new value is greater than max value on up arrow key with seconds', () => {
+    const input = shallow(<TimeField value={'00:00:25'} maxValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {keyCode: upArrowKeyCode, target: {selectionEnd: 5}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventB).state('value')).toEqual('00:00:25');
+  });
+
+  test('should keep old value if new value is greater than max value on up arrow key with millis', () => {
+    const input = shallow(<TimeField value={'00:00:00.250'} maxValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: upArrowKeyCode, target: {selectionEnd: 9}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('00:00:00.250');
+  });
+
+  test('should keep old value if new value is less than min value on default value change', () => {
+    const input = shallow(<TimeField minValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {target: {value: '00:24', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventA).state('value')).toEqual('00:00');
+  });
+
+  test('should keep old value if new value is less than min value on default value change with seconds', () => {
+    const input = shallow(<TimeField minValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {target: {value: '00:00:24', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00');
+  });
+
+  test('should keep old value if new value is less than min value on default value change with millis', () => {
+    const input = shallow(<TimeField minValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventB = {target: {value: '00:00:00.240', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00.000');
+  });
+
+  test('should keep old value if new value is less than min value on value change', () => {
+    const input = shallow(<TimeField value={'00:26'} minValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {target: {value: '00:24', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventA).state('value')).toEqual('00:26');
+  });
+
+  test('should keep old value if new value is less than min value on value change with seconds', () => {
+    const input = shallow(<TimeField value={'00:00:26'} minValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {target: {value: '00:00:24', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:26');
+  });
+
+  test('should keep old value if new value is less than min value on value change with millis', () => {
+    const input = shallow(<TimeField value={'00:00:00.260'} minValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventB = {target: {value: '00:00:00.240', selectionEnd: 1}, persist};
+    expect(input.simulate('change', eventB).state('value')).toEqual('00:00:00.260');
+  });
+
+  test('should keep old value if new value is less than min value on up arrow key', () => {
+    const input = shallow(<TimeField value={'00:25'} minValue={'00:25'} onChange={onChangeA} />);
+
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 3}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventA).state('value')).toEqual('00:25');
+  });
+
+  test('should keep old value if new value is less than min value on up arrow key with seconds', () => {
+    const input = shallow(<TimeField value={'00:00:25'} minValue={'00:00:25'} onChange={onChangeB} showSeconds />);
+
+    const eventB = {keyCode: downArrowKeyCode, target: {selectionEnd: 5}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventB).state('value')).toEqual('00:00:25');
+  });
+
+  test('should keep old value if new value is less than min value on up arrow key with millis', () => {
+    const input = shallow(<TimeField value={'00:00:00.250'} minValue={'00:00:00.250'} onChange={onChangeC} showSeconds showMillis />);
+
+    const eventC = {keyCode: downArrowKeyCode, target: {selectionEnd: 9}, persist, preventDefault};
+    expect(input.simulate('keyDown', eventC).state('value')).toEqual('00:00:00.250');
+  });
+
 });

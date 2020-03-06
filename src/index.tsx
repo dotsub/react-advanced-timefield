@@ -87,6 +87,8 @@ type onChangeType = (event: SyntheticEvent<HTMLInputElement>, value: string) => 
 
 interface Props {
   value?: string;
+  minValue?: string;
+  maxValue?: string;
   onChange?: onChangeType;
   showSeconds?: boolean;
   showMillis?: boolean;
@@ -225,7 +227,8 @@ export default class TimeField extends React.Component<Props, State> {
       }
     }
 
-    const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
+    // eslint-disable-next-line prefer-const
+    let [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
       this.state._showSeconds,
       this.state._showMillis,
       newValue,
@@ -233,6 +236,13 @@ export default class TimeField extends React.Component<Props, State> {
       colon,
       newPosition
     );
+
+    if (
+      (this.props.maxValue && validatedTime > this.props.maxValue) ||
+      (this.props.minValue && validatedTime < this.props.minValue)
+    ) {
+      validatedTime = oldValue;
+    }
 
     this.setState({value: validatedTime}, () => {
       inputEl.selectionStart = validatedCursorPosition;
@@ -279,7 +289,8 @@ export default class TimeField extends React.Component<Props, State> {
       }
     }
 
-    const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
+    // eslint-disable-next-line prefer-const
+    let [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
       this.state._showSeconds,
       this.state._showMillis,
       newValue,
@@ -287,6 +298,13 @@ export default class TimeField extends React.Component<Props, State> {
       colon,
       newPosition
     );
+
+    if (
+      (this.props.maxValue && validatedTime > this.props.maxValue) ||
+      (this.props.minValue && validatedTime < this.props.minValue)
+    ) {
+      validatedTime = oldValue;
+    }
 
     this.setState({value: validatedTime}, () => {
       inputEl.selectionStart = validatedCursorPosition;
