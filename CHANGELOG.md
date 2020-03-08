@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.6.2](https://github.com/dotsub/react-advanced-timefield/compare/v3.6.1...v3.6.2) (2020-03-07)
+
+### Bugs
+
+* Fix bug that caused keyboard commands to not work ([PR13](https://github.com/dotsub/react-advanced-timefield/pull/13))
+
+
 # [3.6.1](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.5...v3.6.1) (2020-03-06)
 
 ### Features
