@@ -13,6 +13,7 @@ describe('Component', () => {
   let onChangeC: jest.Mock;
   const upArrowKeyCode = 38;
   const downArrowKeyCode = 40;
+  const rightArrowKeyCode = 39;
 
   beforeEach(() => {
     persist = jest.fn();
@@ -414,4 +415,29 @@ describe('Component', () => {
     expect(input.simulate('keyDown', eventC).state('value')).toEqual('12:34:56.000');
   });
 
+  test('should keep the cursor position after value update', () => {
+    // GIVEN
+    const event = {keyCode: rightArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
+    a.simulate('keyDown', event);
+
+    // WHEN
+    a.setProps({value: '21:43'});
+
+    // THEN
+    expect(a.state('value')).toEqual('21:43');
+    // @ts-ignore - TS false positive for input
+    expect(a.find("input").instance().selectionEnd).toEqual(2);
+  });
+
+  test('updates state if same value is passed via properties but the internal state is different', () => {
+    // GIVEN
+    const eventA = {target: {value: '1:34'}, persist};
+    a.simulate('change', eventA);
+
+      // WHEN
+    a.setProps({value: '12:34'});
+
+    // THEN
+    expect(a.state('value')).toEqual('12:34');
+  });
 });

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, CSSProperties, ReactElement, SyntheticEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, CSSProperties, ReactElement, SyntheticEvent, RefObject} from 'react';
 
 const DEFAULT_COLON = ':';
 const DEFAULT_DOT = '.';
@@ -98,6 +98,7 @@ interface Props {
 
 interface State {
   value: string;
+  cursorPosition: number;
   _colon: string;
   _defaultValue: string;
   _showSeconds: boolean;
@@ -106,6 +107,7 @@ interface State {
 }
 
 export default class TimeField extends React.Component<Props, State> {
+  private inputRef: RefObject<HTMLInputElement>;
   static defaultProps: Props = {
     showSeconds: false,
     showMillis: false,
@@ -116,15 +118,16 @@ export default class TimeField extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     const _showSeconds = Boolean(props.showSeconds);
     const _showMillis = Boolean(props.showMillis);
     const _defaultValue = _showSeconds ? (_showMillis ? DEFAULT_VALUE_MILLIS : DEFAULT_VALUE_SECONDS) : DEFAULT_VALUE;
     const _colon = props.colon && props.colon.length === 1 ? props.colon : DEFAULT_COLON;
     const [validatedTime] = validateTimeAndCursor(_showSeconds, _showMillis, this.props.value, _defaultValue, _colon);
 
+    this.inputRef = React.createRef();
     this.state = {
       value: validatedTime,
+      cursorPosition: 0,
       _colon,
       _showSeconds,
       _showMillis,
@@ -136,18 +139,24 @@ export default class TimeField extends React.Component<Props, State> {
     this.onKeyDowned = this.onKeyDowned.bind(this);
   }
 
-  componentDidUpdate(prevProps: Props): void {
-    if (this.props.value !== prevProps.value) {
-      const [validatedTime] = validateTimeAndCursor(
+  componentDidUpdate(prevProps: Props, prevState: State): void {
+    if (this.props.value && this.props.value !== this.state.value && prevState.value !== this.props.value) {
+      const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
         this.state._showSeconds,
         this.state._showMillis,
         this.props.value,
         this.state._defaultValue,
-        this.state._colon
+        this.state._colon,
+        this.state.cursorPosition
       );
-      this.setState({
-        value: validatedTime
-      });
+      if (validatedTime !== this.state.value) {
+        this.setState({value: validatedTime, cursorPosition: this.state.cursorPosition}, () => {
+          if (this.inputRef.current) {
+            this.inputRef.current.selectionStart = validatedCursorPosition;
+            this.inputRef.current.selectionEnd = validatedCursorPosition;
+          }
+        });
+      }
     }
   }
 
@@ -234,7 +243,7 @@ export default class TimeField extends React.Component<Props, State> {
       newPosition
     );
 
-    this.setState({value: validatedTime}, () => {
+    this.setState({value: validatedTime, cursorPosition: newPosition}, () => {
       inputEl.selectionStart = validatedCursorPosition;
       inputEl.selectionEnd = validatedCursorPosition;
       callback(event, validatedTime);
@@ -286,8 +295,7 @@ export default class TimeField extends React.Component<Props, State> {
         colon,
         newPosition
       );
-
-      this.setState({value: validatedTime}, () => {
+      this.setState({value: validatedTime, cursorPosition: newPosition}, () => {
         inputEl.selectionStart = validatedCursorPosition;
         inputEl.selectionEnd = validatedCursorPosition;
         const changeEvent = event as SyntheticEvent<HTMLInputElement>;
@@ -318,6 +326,7 @@ export default class TimeField extends React.Component<Props, State> {
 
     return (
       <input
+        ref={this.inputRef}
         type="text"
         {...props}
         value={value}
