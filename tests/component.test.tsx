@@ -417,8 +417,7 @@ describe('Component', () => {
 
   test('should keep the cursor position after value update', () => {
     // GIVEN
-    const event = {keyCode: rightArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
-    a.simulate('keyDown', event);
+    a.setState({cursorPosition: 2});
 
     // WHEN
     a.setProps({value: '21:43'});
