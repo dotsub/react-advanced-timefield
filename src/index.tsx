@@ -253,23 +253,23 @@ export default class TimeField extends React.Component<Props, State> {
   }
 
   onKeyDowned(event: KeyboardEvent<HTMLInputElement>, callback: onChangeType): void {
-    const oldValue = this.state.value;
-    const inputEl = event.target as HTMLInputElement;
     const keyCode = event.keyCode;
-    const position = inputEl.selectionEnd || 0;
-    const colon = this.state._colon;
-    const showMillis = this.state._showMillis;
-    let [hours, minutes, seconds, millis] = oldValue.split(colon);
-    if (showMillis && seconds) {
-      [seconds, millis] = seconds.split(DEFAULT_DOT);
-    }
-
-    let newValue = oldValue;
-    let newPosition = position;
-
     const isUpArrow = keyCode === UP_ARROW_KEY_CODE;
     const isDownArrow = keyCode === DOWN_ARROW_KEY_CODE;
     if (isUpArrow || isDownArrow) {
+      const oldValue = this.state.value;
+      const inputEl = event.target as HTMLInputElement;
+      const position = inputEl.selectionEnd || 0;
+      const colon = this.state._colon;
+      const showMillis = this.state._showMillis;
+      let [hours, minutes, seconds, millis] = oldValue.split(colon);
+      if (showMillis && seconds) {
+        [seconds, millis] = seconds.split(DEFAULT_DOT);
+      }
+
+      let newValue = oldValue;
+      let newPosition = position;
+
       event.preventDefault(); // prevents cursor moving to beginning or end of input
       if (position > this.state._maxLength) {
         newPosition = this.state._maxLength;
@@ -286,24 +286,22 @@ export default class TimeField extends React.Component<Props, State> {
         // millis
         newValue = `${oldValue.substr(0, 9)}${increment(millis, isUpArrow ? 100 : -100)}`;
       }
+
+      const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
+        this.state._showSeconds,
+        this.state._showMillis,
+        newValue,
+        oldValue,
+        colon,
+        newPosition
+      );
+      this.setState({value: validatedTime, cursorPosition: newPosition}, () => {
+        inputEl.selectionStart = validatedCursorPosition;
+        inputEl.selectionEnd = validatedCursorPosition;
+        const changeEvent = event as SyntheticEvent<HTMLInputElement>;
+        callback(changeEvent, validatedTime);
+      });
     }
-
-    const [validatedTime, validatedCursorPosition] = validateTimeAndCursor(
-      this.state._showSeconds,
-      this.state._showMillis,
-      newValue,
-      oldValue,
-      colon,
-      newPosition
-    );
-
-    this.setState({value: validatedTime, cursorPosition: newPosition}, () => {
-      inputEl.selectionStart = validatedCursorPosition;
-      inputEl.selectionEnd = validatedCursorPosition;
-      const changeEvent = event as SyntheticEvent<HTMLInputElement>;
-      callback(changeEvent, validatedTime);
-    });
-
     event.persist();
   }
 

@@ -13,7 +13,8 @@ describe('Component', () => {
   let onChangeC: jest.Mock;
   const upArrowKeyCode = 38;
   const downArrowKeyCode = 40;
-  const rightArrowKeyCode = 39;
+  const ctrlKeyCode = 17;
+  const altKeyCode = 18;
 
   beforeEach(() => {
     persist = jest.fn();
@@ -417,8 +418,7 @@ describe('Component', () => {
 
   test('should keep the cursor position after value update', () => {
     // GIVEN
-    const event = {keyCode: rightArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
-    a.simulate('keyDown', event);
+    a.setState({cursorPosition: 2});
 
     // WHEN
     a.setProps({value: '21:43'});
@@ -439,5 +439,40 @@ describe('Component', () => {
 
     // THEN
     expect(a.state('value')).toEqual('12:34');
+  });
+
+  test('should update state on down arrow key typed', () => {
+    // GIVEN
+    const eventA = {keyCode: downArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
+
+    // WHEN
+    a.simulate('keyDown', eventA);
+
+    // THEN
+    expect(onChangeA).toBeCalled();
+  });
+
+  test('should update state on up arrow key typed', () => {
+    // GIVEN
+    const eventA = {keyCode: upArrowKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
+
+    // WHEN
+    a.simulate('keyDown', eventA);
+
+    // THEN
+    expect(onChangeA).toBeCalled();
+  });
+
+  test('should not update state on other keys typed', () => {
+    // GIVEN
+    const eventA1 = {keyCode: ctrlKeyCode, target: {selectionEnd: 2}, persist, preventDefault};
+    const eventA2 = {keyCode: altKeyCode, target: {selectionEnd: 3}, persist, preventDefault};
+
+    // WHEN
+    a.simulate('keyDown', eventA1);
+    a.simulate('keyDown', eventA2);
+
+    // THEN
+    expect(onChangeA).not.toBeCalled();
   });
 });
