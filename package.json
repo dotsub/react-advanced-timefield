@@ -7,7 +7,7 @@
     "email": "adolfo.software@gmail.com"
   },
   "license": "MIT",
-  "main": "index.tsx",
+  "main": "index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc && cd ./demo && npm run build && cd -",
