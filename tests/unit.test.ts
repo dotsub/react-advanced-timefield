@@ -32,7 +32,7 @@ describe('#validateTimeAndCursor()', () => {
   const DF = '00:00:00.000';
 
   test('should return an array', () => {
-    const res = validateTimeAndCursor(true, true,'', DF, ':', 0);
+    const res = validateTimeAndCursor(true, true, '', DF, ':', 0);
     expect(res).toBeInstanceOf(Array);
     expect(res).toHaveLength(2);
     expect(res).toEqual([DF, 0]);

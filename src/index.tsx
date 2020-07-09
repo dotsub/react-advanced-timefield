@@ -93,7 +93,7 @@ interface Props {
   input: ReactElement | null;
   colon?: string;
   className?: string;
-  style?: CSSProperties | {};
+  style?: CSSProperties | undefined;
 }
 
 interface State {
@@ -262,6 +262,7 @@ export default class TimeField extends React.Component<Props, State> {
       const position = inputEl.selectionEnd || 0;
       const colon = this.state._colon;
       const showMillis = this.state._showMillis;
+      // eslint-disable-next-line prefer-const
       let [hours, minutes, seconds, millis] = oldValue.split(colon);
       if (showMillis && seconds) {
         [seconds, millis] = seconds.split(DEFAULT_DOT);
@@ -307,7 +308,7 @@ export default class TimeField extends React.Component<Props, State> {
 
   render(): ReactElement {
     const {value} = this.state;
-    const {onChange, className, style, showSeconds, showMillis, input, colon, ...props} = this.props; //eslint-disable-line no-unused-vars
+    const {onChange, className, style, input, ...props} = this.props;
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
       this.onInputChange(event, (e: SyntheticEvent<HTMLInputElement>, v: string) => onChange && onChange(e, v));
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) =>
