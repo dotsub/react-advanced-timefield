@@ -8,5 +8,6 @@ node_js:
   - "node"
 script:
   - npm install && cd demo && npm install && cd -
+  - npm run lint
   - npm run build
   - npm test
