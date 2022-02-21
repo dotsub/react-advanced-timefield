@@ -1,3 +1,4 @@
+import 'jsdom-global/register';
 import React from 'react';
 import {shallow, mount, ReactWrapper} from 'enzyme';
 import TimeField from '../src/index';
