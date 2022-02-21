@@ -2,10 +2,7 @@
   "name": "react-advanced-timefield",
   "version": "3.6.7",
   "description": "Advanced react time input field",
-  "author": {
-    "name": "Adolfo Vazquez",
-    "email": "adolfo.software@gmail.com"
-  },
+  "author": "Adolfo Vazquez <adolfo.software@gmail.com>",
   "license": "MIT",
   "main": "index.js",
   "types": "dist/index.d.ts",
@@ -80,17 +77,12 @@
     "@types/enzyme-adapter-react-16": "1.0.6"
   },
   "contributors": [
-    {
-      "name": "Anton Fisher",
-      "url": "https://github.com/antonfisher"
-    },
-    {
-      "name": "Nicholas Yang",
-      "url": "https://github.com/NicholasLYang"
-    },
-    {
-      "name": "Adolfo Vazquez",
-      "url": "https://github.com/adolfov"
-    }
-  ]
+    "Anton Fisher (https://github.com/antonfisher)",
+    "Nicholas Yang (https://github.com/NicholasLYang)",
+    "Adolfo Vazquez (https://github.com/adolfov)"
+  ],
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  }
 }

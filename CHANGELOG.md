@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [3.6.7](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.5...v3.6.7) (2022-02-17)
+
+
+### Features
+
+* Dependency updates
+
 # [3.5.5](https://github.com/dotsub/react-advanced-timefield/compare/v3.5.4...v3.5.5) (2020-03-05)
 
 
