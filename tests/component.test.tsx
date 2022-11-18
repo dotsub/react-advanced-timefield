@@ -24,8 +24,8 @@ describe('Component', () => {
     onChangeB = jest.fn();
     onChangeC = jest.fn();
     a = mount(<TimeField value={'12:34'} onChange={onChangeA} />);
-    b = mount(<TimeField value={'12:34:56'} onChange={onChangeB} showSeconds />);
-    c = mount(<TimeField value={'12:34:56.789'} onChange={onChangeC} showSeconds showMillis />);
+    b = mount(<TimeField value={'12:34:56'} onChange={onChangeB} showSeconds autoFocus />);
+    c = mount(<TimeField value={'12:34:56.789'} onChange={onChangeC} showSeconds showMillis autoFocus={false} />);
   });
 
   afterEach(() => {
@@ -478,5 +478,14 @@ describe('Component', () => {
 
     // THEN
     expect(onChangeA).not.toBeCalled();
+  });
+
+  test('is focused if required', () => {
+    // WHEN -> rendered
+
+    // THEN
+    expect(a?.find('input').getElement().props.autoFocus).toBeFalsy();
+    expect(b?.find('input').getElement().props.autoFocus).toBeTruthy();
+    expect(c?.find('input').getElement().props.autoFocus).toBeFalsy();
   });
 });
