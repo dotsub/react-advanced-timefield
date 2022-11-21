@@ -6,6 +6,7 @@ branches:
   except:
   - docs
 language: node_js
+npm_args: "--version"
 node_js:
   - 18
 script:
