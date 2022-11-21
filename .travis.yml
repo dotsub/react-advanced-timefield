@@ -9,7 +9,7 @@ language: node_js
 node_js:
   - 18
 script:
-  - npm install && cd demo && npm install && cd -
+  - npm install --legacy-peer-deps && cd demo && npm install && cd -
   - npm run lint
   - npm run build
   - npm test
