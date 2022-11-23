@@ -91,6 +91,7 @@ interface Props {
   showSeconds?: boolean;
   showMillis?: boolean;
   input: ReactElement | null;
+  autoFocus?: boolean;
   colon?: string;
   className?: string;
   style?: CSSProperties | undefined;
@@ -329,12 +330,12 @@ export default class TimeField extends React.Component<Props, State> {
       <input
         ref={this.inputRef}
         type="text"
-        {...props}
         value={value}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
         className={className}
         style={style}
+        autoFocus={props.autoFocus}
       />
     );
   }

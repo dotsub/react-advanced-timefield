@@ -1,13 +1,16 @@
+dist:
+  jammy
 git:
   depth: 3
 branches:
   except:
   - docs
 language: node_js
+npm_args: "--version"
 node_js:
-  - "node"
+  - 18
 script:
-  - npm install && cd demo && npm install && cd -
+  - npm install --legacy-peer-deps && cd demo && npm install && cd -
   - npm run lint
   - npm run build
   - npm test
